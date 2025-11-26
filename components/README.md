@@ -128,6 +128,41 @@ function App() {
 
 ---
 
+### 5. ProductMappingTool.jsx
+Utility for mapping internal products to Best Buy Marketplace.
+
+**Features:**
+- Product listing table with editable fields
+- Filter to show only unmapped products
+- Individual save per row
+- Bulk save for multiple products
+- Export to CSV
+- Real-time stats (total, mapped, unmapped)
+- Pending changes indicator
+
+**Editable Fields:**
+- `mirakl_sku` - Mirakl product SKU
+- `bestbuy_category_id` - Best Buy category identifier
+
+**Usage:**
+```jsx
+import ProductMappingTool from './components/ProductMappingTool';
+
+function App() {
+  return <ProductMappingTool />;
+}
+```
+
+**API Endpoints Used:**
+- `GET /api/product-mapping` - Get all products with mapping fields
+- `PUT /api/product-mapping/:id` - Update single product
+- `POST /api/product-mapping/bulk` - Bulk update products
+
+**CSV Export:**
+Exports filtered products with columns: ID, SKU, Product Name, Price, Mirakl SKU, Best Buy Category ID
+
+---
+
 ## Installation
 
 ### 1. Install Dependencies
@@ -292,17 +327,20 @@ app.use(cors({
 
 ## Features by Component
 
-| Feature | Manager | Orders | Detail |
-|---------|---------|--------|--------|
-| View sync status | ✅ | | |
-| Sync inventory | ✅ | | |
-| Pull orders | ✅ | | |
-| List orders | | ✅ | |
-| Filter orders | | ✅ | |
-| View order detail | | | ✅ |
-| Accept order | | | ✅ |
-| Ship order | | | ✅ |
-| View shipments | | | ✅ |
+| Feature | Manager | Orders | Detail | Mapping |
+|---------|---------|--------|--------|---------|
+| View sync status | ✅ | | | |
+| Sync inventory | ✅ | | | |
+| Pull orders | ✅ | | | |
+| List orders | | ✅ | | |
+| Filter orders | | ✅ | | |
+| View order detail | | | ✅ | |
+| Accept order | | | ✅ | |
+| Ship order | | | ✅ | |
+| View shipments | | | ✅ | |
+| Map products | | | | ✅ |
+| Bulk updates | | | | ✅ |
+| Export CSV | | | | ✅ |
 
 ---
 
