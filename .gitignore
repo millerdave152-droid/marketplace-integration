@@ -66,3 +66,18 @@ coverage/
 *.njsproj
 *.sln
 *.sw?
+
+# Exclude main app folders (this is a marketplace integration module)
+backend/
+frontend/
+sample-imports/
+.claude/
+
+# Exclude test scripts from main app
+check-prices.js
+find-newest-samsung.js
+find-test-products.js
+verify-all-test-products.js
+verify-nan-fix.js
+CSV_IMPORT_GUIDE.md
+PRODUCT_MANAGEMENT_SETUP.md
