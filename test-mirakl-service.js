@@ -111,7 +111,12 @@ async function testMiraklService() {
       'acceptOrder',
       'createShipment',
       'getOfferBySku',
-      'updateInventory'
+      'updateInventory',
+      'delay',
+      'retryWithBackoff',
+      'handleMiraklError',
+      'getCarrierName',
+      'getConfig'
     ];
 
     let methodsPassed = true;
@@ -128,6 +133,56 @@ async function testMiraklService() {
       console.log('✅ All required methods exist');
     } else {
       console.log('❌ Some required methods missing');
+    }
+
+    // Test 6: Carrier name mapping
+    console.log('\nTest 6: Testing carrier name mapping...');
+    const carrierTests = [
+      { code: 'UPS', expected: 'United Parcel Service' },
+      { code: 'USPS', expected: 'United States Postal Service' },
+      { code: 'FEDEX', expected: 'FedEx' },
+      { code: 'DHL', expected: 'DHL Express' },
+      { code: 'UNKNOWN', expected: 'UNKNOWN' }, // Fallback test
+    ];
+
+    let carrierPassed = true;
+    carrierTests.forEach(test => {
+      const result = miraklService.getCarrierName(test.code);
+      if (result === test.expected) {
+        console.log(`   ✅ ${test.code} → ${result}`);
+      } else {
+        console.log(`   ❌ ${test.code} → ${result} (expected ${test.expected})`);
+        carrierPassed = false;
+      }
+    });
+
+    if (carrierPassed) {
+      console.log('✅ All carrier name mappings passed');
+    } else {
+      console.log('❌ Some carrier name mappings failed');
+    }
+
+    // Test 7: Configuration
+    console.log('\nTest 7: Testing configuration info...');
+    const config = miraklService.getConfig();
+    console.log('   Configuration:');
+    console.log(`   - Configured: ${config.configured}`);
+    console.log(`   - API URL: ${config.apiUrl || 'Not set'}`);
+    console.log(`   - Shop ID: ${config.shopId || 'Not set'}`);
+    console.log(`   - Has API Key: ${config.hasApiKey}`);
+    console.log(`   - Max Retries: ${config.maxRetries}`);
+    console.log(`   - Base Delay: ${config.baseDelay}ms`);
+    console.log('✅ Configuration info retrieved');
+
+    // Test 8: Delay function
+    console.log('\nTest 8: Testing delay function...');
+    const startTime = Date.now();
+    await miraklService.delay(100); // 100ms delay
+    const elapsed = Date.now() - startTime;
+    if (elapsed >= 100 && elapsed < 150) {
+      console.log(`   ✅ Delay worked correctly (${elapsed}ms)`);
+    } else {
+      console.log(`   ⚠️  Delay took ${elapsed}ms (expected ~100ms)`);
     }
 
     if (!apiUrl || !apiKey || !shopId) {
